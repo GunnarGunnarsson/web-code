@@ -58,7 +58,7 @@ main {
 }
 
 #container:empty:before {
-	content: 'Welcome to Web Code.';
+	content: '';
 	font-size: calc(15vw - 20px);
 	color: rgba(255, 255, 255, 0.4);
 	text-align: center;

@@ -9,9 +9,9 @@ import debounce from 'lodash.debounce';
 
 var settings = {
 	theme: 'web-code',
-	fontSize: 14,
+	fontSize: 9,
 	fontLigatures: true,
-	fontFamily: '"Operator Mono", "Fira Code"'
+	fontFamily: '"courier"'
 }
 var settingsKeys = Object.keys(settings);
 

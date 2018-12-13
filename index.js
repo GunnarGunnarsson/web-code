@@ -116,6 +116,10 @@ lockFile.lock(lockfile, {}, function (err) {
 	wss.on('connection', function connection(ws) {
 		ws.on('message', wsMessaging.wsRouting);
 
+		ws.on("error", (err) => {
+		    console.log(err.stack);
+		});
+
 		ws.webCodeClient = new Client();
 		ws.webCodeClient.on('change', function fn(stats) {
 			ws.send(JSON.stringify(['FS_CHANGE', null, stats.toDoc()]), e => e && console.log(e));
@@ -154,7 +158,8 @@ lockFile.lock(lockfile, {}, function (err) {
 		console.log('Open up: http://127.0.0.1:' + server.address().port);
 
 		// if an address is set to open then do otherwise just run the server
-		if (lastWorkingDir) exec('termux-open-url http://127.0.0.1:' + server.address().port, puts);
+		// if (lastWorkingDir) exec('termux-open-url http://127.0.0.1:' + server.address().port, puts);
+		// exec('start chrome http://127.0.0.1:' + server.address().port, puts);
 	});
 
 	function exit() {
@@ -189,7 +194,8 @@ lockFile.lock(lockfile, {}, function (err) {
 
 		// Opening a new browser tab to that location.
 		lastWorkingDir = path;
-		exec('termux-open-url http://127.0.0.1:' + server.address().port, puts);
+		// exec('termux-open-url http://127.0.0.1:' + server.address().port, puts);
+		// exec('start chrome http://127.0.0.1:' + server.address().port, puts);
 	});
 
 	process.on('exit', exit);
