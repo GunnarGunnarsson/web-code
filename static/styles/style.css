@@ -70,19 +70,15 @@ main {
 }
 
 #directory {
-	flex-grow: 2;
 	border-width: 0;
-	margin-top: 0.5em;
 	background: var(--file-list-bg);
 	color: var(--file-list-fg);
 }
 
 #currently-open-files {
-	margin-top: 0.5em;
 	border-width: 0;
 	background: var(--file-list-bg);
 	color: var(--file-list-fg);
-	min-height: 5em;
 }
 
 .tab-content {
@@ -120,7 +116,7 @@ main {
 }
 
 .y-handle {
-  width: 5px;
+  height: 5px;
   text-align: center;
   color: white;
   
@@ -281,7 +277,7 @@ main {
 .filelist {
 	margin: 0;
 	border: 1px solid grey;
-	flex-grow: 1;
+	flex: 1;
 	overflow: auto;
 	list-style: none;
 	padding: 0;

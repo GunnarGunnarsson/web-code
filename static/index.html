@@ -55,6 +55,8 @@
 			              {
 			              	return;
 			              }
+
+			              console.log(e.pageX, prev.offset().left, pos_x, drg_w);
 			              
 			              var leftPercentage = (((e.pageX - prev.offset().left) + (pos_x - drg_w / 2)) / total); 
 			              var rightPercentage = 1 - leftPercentage; 
@@ -79,7 +81,86 @@
 			})(jQuery);
 
 			$('.x-handle').xdrags();
-			$('.y-handle').xdrags();
+		});
+	</script>
+	<script>
+		$(document).ready(function(){
+			(function($) {
+			    $.fn.ydrags = function(opt) {
+
+			      opt = $.extend({handle:"",cursor:"ns-resize", min: 10}, opt);
+
+			        if(opt.handle === "") {
+			            var $el = this;
+			        } else {
+			            var $el = this.find(opt.handle);
+			        }
+			     
+			        var priorCursor = $('body').css('cursor');
+
+			        return $el.css('cursor', opt.cursor).on("mousedown", function(e) {
+			          
+			            priorCursor = $('body').css('cursor');
+			            $('body').css('cursor', opt.cursor);
+			          
+			            if(opt.handle === "") {
+			                var $drag = $(this).addClass('draggable');
+			            } else {
+			                var $drag = $(this).addClass('active-handle').parent().addClass('draggable');
+			            }
+			            var z_idx = $drag.css('z-index'),
+			                drg_h = $drag.outerHeight(),
+			                drg_w = $drag.outerWidth(),
+			                pos_y = $drag.offset().top + drg_h - e.pageY,
+			                pos_x = $drag.offset().left + drg_w - e.pageX;
+			            $drag.css('z-index', 1000).parents().on("mousemove", function(e) {
+			              
+			              var prev = $('.draggable').prev();
+			              var next = $('.draggable').next(); 
+			              
+			              // Assume 50/50 split between prev and next then adjust to
+			              // the next X for prev
+			              
+			              var total = prev.outerHeight() + next.outerHeight();
+			              
+			              if(prev.outerWidth() == null || prev.outerWidth() == null)
+			              {
+			              	return;
+			              }
+
+			              // e.pageY, distance between the top of the page to the cursor
+			              // prev.offset().top, distance between top of the page to the top of the upper div
+			              // drg_h, height of the dragging element
+			              // pos_y, distance between the top of the dragging element to the cursor
+
+			              /*
+
+			              */
+
+			              var topPercentage = (((e.pageY - prev.offset().top) + (pos_y - drg_h / 2)) / total); 
+			              var bottomPercentage = 1 - topPercentage; 
+			              
+			              if(topPercentage * 100 < opt.min || bottomPercentage * 100 < opt.min)
+			              {
+			                return; 
+			              }
+
+										console.log(total);			              
+			              prev.css('flex', topPercentage.toString());
+			              next.css('flex', bottomPercentage.toString()); 
+			               
+			                $(document).on("mouseup", function() {
+			                  $('body').css('cursor', priorCursor);
+			                    $('.draggable').removeClass('draggable').css('z-index', z_idx);
+			                });
+			            });
+			            e.preventDefault(); // disable selection
+			        });
+
+			    }
+			})(jQuery);
+
+			$('.y-handle').ydrags();
 		});
 	</script>
 	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
