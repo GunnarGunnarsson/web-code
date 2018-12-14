@@ -10,6 +10,78 @@
     <link rel="stylesheet" href="contextmenu/contextmenu.css" type="text/css" media="all" />
 	<link rel="manifest" href="manifest.json">
 	<script src="/companion.js" data-service-worker="sw-wrapper.js"></script>
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	<script>
+		$(document).ready(function(){
+			(function($) {
+			    $.fn.xdrags = function(opt) {
+
+			      opt = $.extend({handle:"",cursor:"ew-resize", min: 10}, opt);
+
+			        if(opt.handle === "") {
+			            var $el = this;
+			        } else {
+			            var $el = this.find(opt.handle);
+			        }
+			     
+			        var priorCursor = $('body').css('cursor');
+
+			        return $el.css('cursor', opt.cursor).on("mousedown", function(e) {
+			          
+			            priorCursor = $('body').css('cursor');
+			            $('body').css('cursor', opt.cursor);
+			          
+			            if(opt.handle === "") {
+			                var $drag = $(this).addClass('draggable');
+			            } else {
+			                var $drag = $(this).addClass('active-handle').parent().addClass('draggable');
+			            }
+			            var z_idx = $drag.css('z-index'),
+			                drg_h = $drag.outerHeight(),
+			                drg_w = $drag.outerWidth(),
+			                pos_y = $drag.offset().top + drg_h - e.pageY,
+			                pos_x = $drag.offset().left + drg_w - e.pageX;
+			            $drag.css('z-index', 1000).parents().on("mousemove", function(e) {
+			              
+			              var prev = $('.draggable').prev();
+			              var next = $('.draggable').next(); 
+			              
+			              // Assume 50/50 split between prev and next then adjust to
+			              // the next X for prev
+			              
+			              var total = prev.outerWidth() + next.outerWidth();
+			              
+			              if(prev.outerWidth() == null || prev.outerWidth() == null)
+			              {
+			              	return;
+			              }
+			              
+			              var leftPercentage = (((e.pageX - prev.offset().left) + (pos_x - drg_w / 2)) / total); 
+			              var rightPercentage = 1 - leftPercentage; 
+			              
+			              if(leftPercentage * 100 < opt.min || rightPercentage * 100 < opt.min)
+			              {
+			                return; 
+			              }
+			              
+			              prev.css('flex', leftPercentage.toString());
+			              next.css('flex', rightPercentage.toString()); 
+			               
+			                $(document).on("mouseup", function() {
+			                  $('body').css('cursor', priorCursor);
+			                    $('.draggable').removeClass('draggable').css('z-index', z_idx);
+			                });
+			            });
+			            e.preventDefault(); // disable selection
+			        });
+
+			    }
+			})(jQuery);
+
+			$('.x-handle').xdrags();
+			$('.y-handle').xdrags();
+		});
+	</script>
 	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
 
 	<link rel="manifest" href="manifest.json">
@@ -41,8 +113,10 @@
 <main>
 	<div id="sidebar">
 		<ul class="filelist" id="currently-open-files"></ul>
+		<div class="y-handle"></div>
 		<ul class="filelist" id="directory"></ul>
 	</div>
+	<div class="x-handle"></div>
 	<div id="editor">
 		<div id="tabs"></div>
 		<ul id="errors">

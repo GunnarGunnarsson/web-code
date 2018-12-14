@@ -41,6 +41,7 @@ main {
 	display: flex;
 	background: var(--bg-head-color);
 	position: relative;
+	overflow: hidden;
 }
 
 #container:empty {
@@ -81,12 +82,11 @@ main {
 	border-width: 0;
 	background: var(--file-list-bg);
 	color: var(--file-list-fg);
-	border-top-right-radius: 1em;
 	min-height: 5em;
 }
 
 .tab-content {
-	flex-grow: 1;
+	flex: 1;
 	display: none;
 	background-color: var(--bg-head-color);
 	z-index: 1;
@@ -107,11 +107,31 @@ main {
 	flex-grow: 1;
 	display: flex;
 	flex-direction: column;
+	overflow-y: auto;
+	overflow-x: hide;
 }
+
+.x-handle {
+  width: 5px;
+  text-align: center;
+  color: white;
+  
+  transition: all ease-in 0.1s;
+}
+
+.y-handle {
+  width: 5px;
+  text-align: center;
+  color: white;
+  
+  transition: all ease-in 0.1s;
+}
+
+.draggable { background-color: rgba(200, 200, 200, 0.3); }
 
 #sidebar {
 	width: 200px;
-	max-width: 50%;
+	max-width: 100%;
 	display: flex;
 	flex-direction: column;
 }
@@ -274,6 +294,7 @@ main {
 	color: white;
 	display: block;
 	border-bottom: 3px solid grey;
+	margin-bottom: 3px;
 }
 
 .filelist .filelist:before {

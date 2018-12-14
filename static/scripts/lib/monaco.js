@@ -11,7 +11,10 @@ var settings = {
 	theme: 'web-code',
 	fontSize: 14,
 	fontLigatures: true,
-	fontFamily: '"Operator Mono", "Fira Code"'
+	/*fontFamily: '"Operator Mono", "Fira Code"',*/
+	wordWrap: 'on',
+	wrappingIndent: 'same',
+	automaticLayout: true
 }
 var settingsKeys = Object.keys(settings);
 
